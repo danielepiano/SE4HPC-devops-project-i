@@ -1,9 +1,9 @@
-name: C++ CI
+name: Matrix-Multiplication CI
 
 on: [ push, pull_request ]
 
 concurrency:
-  group: build-and-test-${{ github.event_name }}-${{ github.ref }}
+  group: '${{ github.event_name }}-${{ github.ref }}'
   cancel-in-progress: true
 
 jobs:
@@ -12,13 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-      # Doesn't actually make sense to format it during the pipeline
-      # Maybe a format check would make sense to validate a pull-request
-      - name: Install clang-format
-        run: sudo apt-get install clang-format
-      - name: Run clang-format
-        run: clang-format -i src/*.cpp src/*.h tests/*.cpp
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
 
       - name: Setup CMake
         uses: jwlawson/actions-setup-cmake@v2
@@ -30,23 +28,3 @@ jobs:
 
       - name: Run Tests
         run: ctest --test-dir build
-
-      - name: Upload executable artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: executable
-          path: build/ExerciseSession
-          if-no-files-found: error
-          retention-days: 10
-
-  sca:
-    needs:
-      - build-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Install cppcheck
-        run: sudo apt-get install cppcheck
-      - name: Run cppcheck
-        run: cppcheck --enable=all --inconclusive --std=c++17 src
