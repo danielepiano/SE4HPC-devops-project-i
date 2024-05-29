@@ -3,24 +3,10 @@
 #include <vector>
 #include <gtest/gtest.h>
 
-class IdentityScalarTest :
-        public testing::TestWithParam<int> {
+class IdentityScalarTestFixture :
+public ::testing::TestWithParam<int> {
 };
-INSTANTIATE_TEST_SUITE_P(
-        PositiveScalarRange,
-        IdentityScalarTest,
-        ::testing::Range(1, 150),
-        );
-INSTANTIATE_TEST_SUITE_P(
-        NegativeScalarRange,
-        IdentityScalarTest,
-        ::testing::Range(-150, -1),
-);
-INSTANTIATE_TEST_SUITE_P(
-        ZeroScalarValue,
-        IdentityScalarTest,
-        ::testing::Values(0),
-);
+
 
 /*
  * #####################################################################################################################
@@ -32,7 +18,7 @@ INSTANTIATE_TEST_SUITE_P(
  *  Includes: commutative property metamorphic relation.
  * #####################################################################################################################
  */
-TEST_P(IdentityScalarTest, IdentityScalarTest) {
+TEST_P(IdentityScalarTestFixture, IdentityScalarTest) {
     int value = GetParam();
 
     std::vector<std::vector<int>> A = {
@@ -55,6 +41,22 @@ TEST_P(IdentityScalarTest, IdentityScalarTest) {
     multiplyMatrices(B, A, C, 1, 1, 1);
     ASSERT_EQ(C, expected) << "Neutral element property (right 1) for scalar product failed! :(((((";
 }
+
+INSTANTIATE_TEST_SUITE_P(
+        PositiveScalarRange,
+        IdentityScalarTestFixture,
+        ::testing::Range(1, 150),
+);
+INSTANTIATE_TEST_SUITE_P(
+        NegativeScalarRange,
+        IdentityScalarTestFixture,
+        ::testing::Range(-150, -1),
+);
+INSTANTIATE_TEST_SUITE_P(
+        ZeroScalarValue,
+        IdentityScalarTestFixture,
+        ::testing::Values(0),
+);
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
