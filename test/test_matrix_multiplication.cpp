@@ -94,10 +94,77 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarX1ShouldBeScalar) {
             {value}
     };
 
-    ASSERT_EQ(C, expected) << "Neutral element property (left 1) for scalar product failed! :(((((";
+    ASSERT_EQ(C, expected) << "Neutral element property (left 1) for scalar multiplication failed! :(((((";
 
     multiplyMatrices(B, A, C, 1, 1, 1);
-    ASSERT_EQ(C, expected) << "Neutral element property (right 1) for scalar product failed! :(((((";
+    ASSERT_EQ(C, expected) << "Neutral element property (right 1) for scalar multiplication failed! :(((((";
+}
+
+/*
+ *
+ * #####################################################################################################################
+ * WHAT
+ * - Power of 2.
+ * HOW
+ * - Parameterized test for ranges of values:
+ *  * [-150, -1]
+ *  * 0
+ *  * [1, 150]
+ * EXPECTED
+ * - Result should be equal to the actual value raised to the power of 2.
+ * #####################################################################################################################
+ */
+TEST_P(ScalarMultiplicationTestFixture, WhenScalarXScalarShouldBePow2) {
+    int value = GetParam();
+
+    IntMx A = {
+            {value}
+    };
+    IntMx B = {
+            {value}
+    };
+
+    IntMx C(1, std::vector<int>(1, 0));
+
+    multiplyMatrices(A, B, C, 1, 1, 1);
+
+    IntMx expected = {
+            {value * value}
+    };
+
+    ASSERT_EQ(C, expected) << "Scalar multiplication between equal numbers failed! :(((((";
+}
+
+
+/*
+ * #####################################################################################################################
+ * This test is the given example.
+ * WHAT
+ * - Testing matrix product.
+ * EXPECTED
+ * - Actual product.
+ * #####################################################################################################################
+ */
+TEST(MatrixMultiplicationTest, TestMultiplyMatrices) {
+    std::vector<std::vector<int>> A = {
+            {1, 2, 3},
+            {4, 5, 6}
+    };
+    std::vector<std::vector<int>> B = {
+            {7, 8},
+            {9, 10},
+            {11, 12}
+    };
+    std::vector<std::vector<int>> C(2, std::vector<int>(2, 0));
+
+    multiplyMatrices(A, B, C, 2, 3, 2);
+
+    std::vector<std::vector<int>> expected = {
+            {58, 64},
+            {139, 154}
+    };
+
+    ASSERT_EQ(C, expected) << "Matrix multiplication test failed! :(((()";
 }
 
 int main(int argc, char **argv) {
