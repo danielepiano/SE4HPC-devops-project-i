@@ -30,7 +30,9 @@ jobs:
         run: ctest --test-dir build --output-on-failure --output-log test.log
 
       - name: Analyze test logs
-        run: grep -e 'Error [0-9]*' test.log | sort -u > test-report.log
+        run: |
+          grep -e 'Error [0-9]*' test.log | sort -u > test-report.log
+          cat test-report.log
 
       - name: Upload test logs analysis
         uses: actions/upload-artifact@v4
