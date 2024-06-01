@@ -1,15 +1,14 @@
 #include "matrix_multiplication.h"
 #include <iostream>
-#include <vector>
 #include <gtest/gtest.h>
 
 using IntMx = std::vector<std::vector<int>>;
 
 class ScalarMultiplicationTestFixture :
-public ::testing::TestWithParam<int> {
+public testing::TestWithParam<int> {
 };
 INSTANTIATE_TEST_SUITE_P(
-        ScalarRange,
+        IntegerScalarRange,
         ScalarMultiplicationTestFixture,
         testing::Range(-150, 150)
 );
