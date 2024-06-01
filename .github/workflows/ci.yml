@@ -60,3 +60,4 @@ jobs:
           echo "Outcome of unit-tests was ${{ steps.unit-tests.outcome }}"
           echo "Outcome of unit-tests-logs-analysis was ${{ steps.unit-tests-logs-analysis.outcome }}"
           echo "Outcome of unit-tests-report-upload was ${{ steps.unit-tests-report-upload.outcome }}"
+          echo "${{ steps.unit-tests-logs-analysis.outcome }} == success? ${{ steps.unit-tests-logs-analysis.outcome == 'success' }}"
