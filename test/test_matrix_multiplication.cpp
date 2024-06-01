@@ -9,19 +9,9 @@ class ScalarMultiplicationTestFixture :
 public ::testing::TestWithParam<int> {
 };
 INSTANTIATE_TEST_SUITE_P(
-        PositiveScalarRange,
+        ScalarRange,
         ScalarMultiplicationTestFixture,
-        testing::Range(1, 150)
-);
-INSTANTIATE_TEST_SUITE_P(
-        NegativeScalarRange,
-        ScalarMultiplicationTestFixture,
-        testing::Range(-150, -1)
-);
-INSTANTIATE_TEST_SUITE_P(
-        ZeroScalarValue,
-        ScalarMultiplicationTestFixture,
-        testing::Values(0)
+        testing::Range(-150, 150)
 );
 
 /*
@@ -29,10 +19,7 @@ INSTANTIATE_TEST_SUITE_P(
  * WHAT
  * - Zero-element property for scalar multiplication.
  * HOW
- * - Parameterized test for ranges of values:
- *  * [-150, -1]
- *  * 0
- *  * [1, 150]
+ * - Parameterized test for ranges of values [-150, 150].
  * - Exploiting commutative property.
  * EXPECTED
  * - Result should be 0.
@@ -67,10 +54,7 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarX0ShouldBeZero) {
  * WHAT
  * - Neutral-element property for scalar multiplication.
  * HOW
- * - Parameterized test for ranges of values:
- *  * [-150, -1]
- *  * 0
- *  * [1, 150]
+ * - Parameterized test for ranges of values [-150, 150].
  * - Exploiting commutative property.
  * EXPECTED
  * - Result should be equal to the factor <> neutral element.
@@ -104,12 +88,9 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarX1ShouldBeScalar) {
  *
  * #####################################################################################################################
  * WHAT
- * - Power of 2.
+ * - Scalar power of 2.
  * HOW
- * - Parameterized test for ranges of values:
- *  * [-150, -1]
- *  * 0
- *  * [1, 150]
+ * - Parameterized test for ranges of values [-150, 150].
  * EXPECTED
  * - Result should be equal to the actual value raised to the power of 2.
  * #####################################################################################################################
@@ -133,6 +114,39 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarXScalarShouldBePow2) {
     };
 
     ASSERT_EQ(C, expected) << "Scalar multiplication between equal numbers failed! :(((((";
+}
+
+/*
+ *
+ * #####################################################################################################################
+ * WHAT
+ * - Scalar product (row-column).
+ * HOW
+ * - Parameterized test for ranges of values [-150, 150].
+ * EXPECTED
+ * - Result should be equal to {num.elements} times the value squared.
+ * #####################################################################################################################
+ */
+TEST_P(ScalarMultiplicationTestFixture, WhenScalarXScalarShouldBePow2) {
+    int value = GetParam();
+
+    IntMx A = {
+            {value, value}
+    };
+    IntMx B = {
+            {value},
+            {value}
+    };
+
+    IntMx C(1, std::vector<int>(1, 0));
+
+    multiplyMatrices(A, B, C, 1, 2, 1);
+
+    IntMx expected = {
+            {2 * value * value}
+    };
+
+    ASSERT_EQ(C, expected) << "Scalar product (row-column) between equal vectors failed! :(((((";
 }
 
 
