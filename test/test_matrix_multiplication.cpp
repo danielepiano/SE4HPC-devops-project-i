@@ -126,7 +126,7 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarXScalarShouldBePow2) {
  * - Result should be equal to {num.elements} times the value squared.
  * #####################################################################################################################
  */
-TEST_P(ScalarMultiplicationTestFixture, WhenScalarXScalarShouldBePow2) {
+TEST_P(ScalarMultiplicationTestFixture, WhenScalarProductShouldBeSumOfSquaredValues) {
     int value = GetParam();
 
     IntMx A = {
