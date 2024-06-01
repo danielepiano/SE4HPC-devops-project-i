@@ -52,3 +52,15 @@ jobs:
           path: test-report.log
           if-no-files-found: error
           retention-days: 10
+
+      - name: test fix
+        if: always()
+        run: |
+          echo "Outcome of build was ${{ steps.build.outcome }}"
+          echo "${{ steps.build.outcome }} == success? ${{ steps.build.outcome == 'success' }}"
+          echo "Outcome of unit-tests was ${{ steps.unit-tests.outcome }}"
+          echo "${{ steps.unit-tests.outcome }} == success? ${{ steps.unit-tests.outcome == 'success' }}"
+          echo "${{ steps.unit-tests.outcome }} == failure? ${{ steps.unit-tests.outcome == 'failure' }}"
+          echo "Outcome of unit-tests-logs-analysis was ${{ steps.unit-tests-logs-analysis.outcome }}"
+          echo "Outcome of unit-tests-report-upload was ${{ steps.unit-tests-report-upload.outcome }}"
+          echo "${{ steps.unit-tests-logs-analysis.outcome }} == success? ${{ steps.unit-tests-logs-analysis.outcome == 'success' }}"
