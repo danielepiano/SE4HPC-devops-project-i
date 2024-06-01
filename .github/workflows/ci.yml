@@ -33,8 +33,8 @@ jobs:
 
       - name: Run Tests
         id: unit-tests
-        if: ${{ steps.build.conclusion == 'success' }}
-        run: ctest --test-dir build --output-on-failure --output-log test.log
+        run: |
+          if [[ ${{ steps.build.conclusion == 'success' }} ]]; then ctest --test-dir build --output-on-failure --output-log test.log;
 
       - name: Analyze test logs
         id: unit-tests-logs-analysis
