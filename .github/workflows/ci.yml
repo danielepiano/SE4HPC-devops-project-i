@@ -33,7 +33,7 @@ jobs:
 
       - name: Run Tests
         id: unit-tests
-        if: steps.build.outcome = 'success'
+        if: steps.build.outcome == 'success'
         run: ctest --test-dir build --output-on-failure --output-log test.log
 
       - name: Analyze test logs
