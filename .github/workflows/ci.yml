@@ -54,6 +54,7 @@ jobs:
           retention-days: 10
 
       - name: test fix
+        if: always()
         run: |
           echo "Outcome of build was ${{ steps.build.outcome }}"
           echo "Outcome of unit-tests was ${{ steps.unit-tests.outcome }}"
