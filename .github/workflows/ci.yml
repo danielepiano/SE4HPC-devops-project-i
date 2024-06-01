@@ -33,19 +33,19 @@ jobs:
 
       - name: Run Tests
         id: unit-tests
-        if: ${{ steps.build.outcome == 'success' }}
+        if: ${{ steps.build.conclusion == 'success' }}
         run: ctest --test-dir build --output-on-failure --output-log test.log
 
       - name: Analyze test logs
         id: unit-tests-logs-analysis
-        if: ${{ steps.unit-tests.outcome == 'failure' }}
+        if: ${{ steps.unit-tests.conclusion == 'failure' }}
         run: |
           grep -e 'Error [0-9]*' test.log | sort -u > test-report.log
           cat test-report.log
 
       - name: Upload test logs analysis
         id: unit-tests-report-upload
-        if: ${{ steps.unit-tests-logs-analysis.outcome == 'success' }}
+        if: ${{ steps.unit-tests-logs-analysis.conclusion == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-report
@@ -56,11 +56,11 @@ jobs:
       - name: test fix
         if: always()
         run: |
-          echo "Outcome of build was ${{ steps.build.outcome }}"
-          echo "${{ steps.build.outcome }} == success? ${{ steps.build.outcome == 'success' }}"
-          echo "Outcome of unit-tests was ${{ steps.unit-tests.outcome }}"
-          echo "${{ steps.unit-tests.outcome }} == success? ${{ steps.unit-tests.outcome == 'success' }}"
-          echo "${{ steps.unit-tests.outcome }} == failure? ${{ steps.unit-tests.outcome == 'failure' }}"
-          echo "Outcome of unit-tests-logs-analysis was ${{ steps.unit-tests-logs-analysis.outcome }}"
-          echo "Outcome of unit-tests-report-upload was ${{ steps.unit-tests-report-upload.outcome }}"
-          echo "${{ steps.unit-tests-logs-analysis.outcome }} == success? ${{ steps.unit-tests-logs-analysis.outcome == 'success' }}"
+          echo "Outcome of build was ${{ steps.build.conclusion }}"
+          echo "${{ steps.build.conclusion }} == success? ${{ steps.build.conclusion == 'success' }}"
+          echo "Outcome of unit-tests was ${{ steps.unit-tests.conclusion }}"
+          echo "${{ steps.unit-tests.conclusion }} == success? ${{ steps.unit-tests.conclusion == 'success' }}"
+          echo "${{ steps.unit-tests.conclusion }} == failure? ${{ steps.unit-tests.conclusion == 'failure' }}"
+          echo "Outcome of unit-tests-logs-analysis was ${{ steps.unit-tests-logs-analysis.conclusion }}"
+          echo "Outcome of unit-tests-report-upload was ${{ steps.unit-tests-report-upload.conclusion }}"
+          echo "${{ steps.unit-tests-logs-analysis.conclusion }} == success? ${{ steps.unit-tests-logs-analysis.conclusion == 'success' }}"
