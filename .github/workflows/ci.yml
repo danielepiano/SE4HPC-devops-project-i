@@ -33,31 +33,22 @@ jobs:
 
       - name: Run Tests
         id: unit-tests
-        if: steps.build.outcome == 'success'
+        if: ${{ steps.build.outcome == 'success' }}
         run: ctest --test-dir build --output-on-failure --output-log test.log
 
       - name: Analyze test logs
         id: unit-tests-logs-analysis
-        if: always()
+        if: ${{ steps.unit-tests.outcome == 'failure' }}
         run: |
           grep -e 'Error [0-9]*' test.log | sort -u > test-report.log
           cat test-report.log
 
       - name: Upload test logs analysis
         id: unit-tests-report-upload
-        if: steps.unit-tests-logs-analysis.outcome == 'success'
+        if: ${{ steps.unit-tests-logs-analysis.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-report
           path: test-report.log
           if-no-files-found: error
           retention-days: 10
-
-      - name: test fix
-        if: always()
-        run: |
-          echo "Outcome of build was ${{ steps.build.outcome }}"
-          echo "Outcome of unit-tests was ${{ steps.unit-tests.outcome }}"
-          echo "Outcome of unit-tests-logs-analysis was ${{ steps.unit-tests-logs-analysis.outcome }}"
-          echo "Outcome of unit-tests-report-upload was ${{ steps.unit-tests-report-upload.outcome }}"
-          echo "${{ steps.unit-tests-logs-analysis.outcome }} == success? ${{ steps.unit-tests-logs-analysis.outcome == 'success' }}"
