@@ -210,9 +210,9 @@ TEST(ValueBasedMultiplicationTestFixture, WhenAIsVectorWithFirstElementInputValu
             {value, 0, 0, 0}
     };
     IntMx B = {
-            {1, 1}
-            {0, 0}
-            {0, 0}
+            {1, 1},
+            {0, 0},
+            {0, 0},
             {0, 0}
     };
 
