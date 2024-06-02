@@ -120,6 +120,7 @@ TEST_P(ValueBasedMultiplicationTestFixture, WhenScalarXScalarShouldBePow2) {
  * #####################################################################################################################
  * WHAT
  * - Scalar product (row-column).
+ * - ( Indirectly, test even number of A rows / B columns. )
  * HOW
  * - Parameterized test for ranges of values [-150, 150].
  * EXPECTED
@@ -156,7 +157,7 @@ TEST_P(ValueBasedMultiplicationTestFixture, WhenScalarProductShouldBeSumOfSquare
  * - Actual product.
  * #####################################################################################################################
  */
-TEST(ValueBasedMultiplicationTestFixture, TestAssociativePropertyScalarProduct) {
+TEST(ValueBasedMultiplicationTestFixture, WhenAssociativePropertyShouldWork) {
     IntMx A = {
             {2}
     };
@@ -191,6 +192,39 @@ TEST(ValueBasedMultiplicationTestFixture, TestAssociativePropertyScalarProduct) 
     ASSERT_EQ(D1, expected) << "Associative property ((A x B) x C) for scalar product failed! :(((((";
     ASSERT_EQ(D2, expected) << "Associative property (A x (B x C)) for scalar product failed! :(((((";
     ASSERT_EQ(D3, expected) << "Associative property ((A x C) x B) for scalar product failed! :(((((";
+}
+
+/*
+ * #####################################################################################################################
+ * WHAT
+ * - Associative property on scalar multiplication.
+ * - ( By reverse engineering to avoid already known errors, some test cases may allow to spot new errors. )
+ * EXPECTED
+ * - The input value for both the elements in the result first row.
+ * #####################################################################################################################
+ */
+TEST(ValueBasedMultiplicationTestFixture, WhenAIsVectorWithFirstElementInputValueAndBIsRectangularWith11OnFirstRowThenResultValuesShouldBeInputValue) {
+    int value = GetParam();
+
+    IntMx A = {
+            {value, 0, 0, 0}
+    };
+    IntMx B = {
+            {1, 1}
+            {0, 0}
+            {0, 0}
+            {0, 0}
+    };
+
+    IntMx C(1, std::vector<int>(2, 0));
+
+    multiplyMatrices(A, B, C, 1, 4, 2);
+
+    IntMx expected = {
+            {value, value}
+    };
+
+    ASSERT_EQ(C, expected) << "[x,0...0] [{1,1}, {0,0}, ...] = [x,x] for scalar product failed! :(((((";
 }
 
 /*
