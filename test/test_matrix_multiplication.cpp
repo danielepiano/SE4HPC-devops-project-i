@@ -4,12 +4,12 @@
 
 using IntMx = std::vector<std::vector<int>>;
 
-class ScalarMultiplicationTestFixture :
+class ValueBasedMultiplicationTestFixture :
 public testing::TestWithParam<int> {
 };
 INSTANTIATE_TEST_SUITE_P(
         IntegerScalarRange,
-        ScalarMultiplicationTestFixture,
+        ValueBasedMultiplicationTestFixture,
         testing::Range(-150, 150)
 );
 
@@ -24,7 +24,7 @@ INSTANTIATE_TEST_SUITE_P(
  * - Result should be 0.
  * #####################################################################################################################
  */
-TEST_P(ScalarMultiplicationTestFixture, WhenScalarX0ShouldBeZero) {
+TEST_P(ValueBasedMultiplicationTestFixture, WhenScalarX0ShouldBeZero) {
     int value = GetParam();
 
     IntMx A = {
@@ -59,7 +59,7 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarX0ShouldBeZero) {
  * - Result should be equal to the factor <> neutral element.
  * #####################################################################################################################
  */
-TEST_P(ScalarMultiplicationTestFixture, WhenScalarX1ShouldBeScalar) {
+TEST_P(ValueBasedMultiplicationTestFixture, WhenScalarX1ShouldBeScalar) {
     int value = GetParam();
 
     IntMx A = {
@@ -94,7 +94,7 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarX1ShouldBeScalar) {
  * - Result should be equal to the actual value raised to the power of 2.
  * #####################################################################################################################
  */
-TEST_P(ScalarMultiplicationTestFixture, WhenScalarXScalarShouldBePow2) {
+TEST_P(ValueBasedMultiplicationTestFixture, WhenScalarXScalarShouldBePow2) {
     int value = GetParam();
 
     IntMx A = {
@@ -126,7 +126,7 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarXScalarShouldBePow2) {
  * - Result should be equal to {num.elements} times the value squared.
  * #####################################################################################################################
  */
-TEST_P(ScalarMultiplicationTestFixture, WhenScalarProductShouldBeSumOfSquaredValues) {
+TEST_P(ValueBasedMultiplicationTestFixture, WhenScalarProductShouldBeSumOfSquaredValues) {
     int value = GetParam();
 
     IntMx A = {
@@ -148,6 +148,50 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarProductShouldBeSumOfSquaredVal
     ASSERT_EQ(C, expected) << "Scalar product (row-column) between equal vectors failed! :(((((";
 }
 
+/*
+ * #####################################################################################################################
+ * WHAT
+ * - Associative property on scalar multiplication.
+ * EXPECTED
+ * - Actual product.
+ * #####################################################################################################################
+ */
+TEST(ValueBasedMultiplicationTestFixture, TestAssociativePropertyScalarProduct) {
+    IntMx A = {
+            {2}
+    };
+    IntMx B = {
+            {3}
+    };
+    IntMx C = {
+            {4}
+    };
+
+    IntMx D_temp(1, std::vector<int>(1, 0));
+    IntMx D1(1, std::vector<int>(1, 0));
+    IntMx D2(1, std::vector<int>(1, 0));
+    IntMx D3(1, std::vector<int>(1, 0));
+
+    // D1 = (A x B) x C
+    multiplyMatrices(A, B, D_temp, 1, 1, 1);
+    multiplyMatrices(D_temp, C, D1, 1, 1, 1);
+
+    // D2 = A x (B x C)
+    multiplyMatrices(B, C, D_temp, 1, 1, 1);
+    multiplyMatrices(A, D_temp, D2, 1, 1, 1);
+
+    // D3 = (A x C) x B
+    multiplyMatrices(A, C, D_temp, 1, 1, 1);
+    multiplyMatrices(D_temp, B, D3, 1, 1, 1);
+
+    IntMx expected = {
+            {24}
+    };
+
+    ASSERT_EQ(D1, expected) << "Associative property ((A x B) x C) for scalar product failed! :(((((";
+    ASSERT_EQ(D2, expected) << "Associative property (A x (B x C)) for scalar product failed! :(((((";
+    ASSERT_EQ(D3, expected) << "Associative property ((A x C) x B) for scalar product failed! :(((((";
+}
 
 /*
  * #####################################################################################################################
@@ -159,20 +203,20 @@ TEST_P(ScalarMultiplicationTestFixture, WhenScalarProductShouldBeSumOfSquaredVal
  * #####################################################################################################################
  */
 TEST(MatrixMultiplicationTest, TestMultiplyMatrices) {
-    std::vector<std::vector<int>> A = {
+    IntMx A = {
             {1, 2, 3},
             {4, 5, 6}
     };
-    std::vector<std::vector<int>> B = {
+    IntMx B = {
             {7, 8},
             {9, 10},
             {11, 12}
     };
-    std::vector<std::vector<int>> C(2, std::vector<int>(2, 0));
+    IntMx C(2, std::vector<int>(2, 0));
 
     multiplyMatrices(A, B, C, 2, 3, 2);
 
-    std::vector<std::vector<int>> expected = {
+    IntMx expected = {
             {58, 64},
             {139, 154}
     };
