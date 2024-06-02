@@ -157,7 +157,7 @@ TEST_P(ValueBasedMultiplicationTestFixture, WhenScalarProductShouldBeSumOfSquare
  * - Actual product.
  * #####################################################################################################################
  */
-TEST(ValueBasedMultiplicationTestFixture, WhenAssociativePropertyShouldWork) {
+TEST(AssociativePropertyTest, WhenAssociativePropertyShouldWork) {
     IntMx A = {
             {2}
     };
@@ -203,7 +203,7 @@ TEST(ValueBasedMultiplicationTestFixture, WhenAssociativePropertyShouldWork) {
  * - The input value for both the elements in the result first row.
  * #####################################################################################################################
  */
-TEST(ValueBasedMultiplicationTestFixture, WhenAIsVectorWithFirstElementInputValueAndBIsRectangularWith11OnFirstRowThenResultValuesShouldBeInputValue) {
+TEST_P(ValueBasedMultiplicationTestFixture, WhenAIsVectorWithFirstElementInputValueAndBIsRectangularWith11OnFirstRowThenResultValuesShouldBeInputValue) {
     int value = GetParam();
 
     IntMx A = {
