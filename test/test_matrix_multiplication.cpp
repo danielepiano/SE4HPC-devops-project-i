@@ -197,7 +197,7 @@ TEST(AssociativePropertyTest, WhenAssociativePropertyShouldWork) {
 /*
  * #####################################################################################################################
  * WHAT
- * - Scalar product (row-column).
+ * - Product between rectangular matrices.
  * - ( By reverse engineering to avoid already known errors, some test cases may allow to spot new errors. )
  * EXPECTED
  * - The input value for both the elements in the result first row.
