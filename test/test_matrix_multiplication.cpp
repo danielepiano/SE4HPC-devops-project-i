@@ -197,7 +197,7 @@ TEST(AssociativePropertyTest, WhenAssociativePropertyShouldWork) {
 /*
  * #####################################################################################################################
  * WHAT
- * - Associative property on scalar multiplication.
+ * - Scalar product (row-column).
  * - ( By reverse engineering to avoid already known errors, some test cases may allow to spot new errors. )
  * EXPECTED
  * - The input value for both the elements in the result first row.
